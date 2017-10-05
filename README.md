@@ -9,7 +9,7 @@ Global support:
 * `process`: never available.
 * `Buffer`: available if the top level file contains `Buffer` or `require("buffer")`.
 
-Usage [here](test/main.js) and compilation [here](test/compile), resulting demo [here](wesh).
+Usage [here](test/main.js) and compilation [here](test/compile.js), resulting demo [here](https://cdn.rawgit.com/lachrist/commonjs-editor/9106eb66/test/index.html).
 Alternatively, the compilation can also be realised via the CLI:
 
 ```sh
