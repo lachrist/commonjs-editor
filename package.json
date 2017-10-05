@@ -1,7 +1,7 @@
 {
   "name": "commonjs-editor",
-  "description": "Edit and execute top-level fileS of CommonJS modules in browsers",
-  "version": "0.0.0",
+  "description": "Edit and execute top-level files of CommonJS modules in browsers",
+  "version": "0.0.1",
   "author": {
     "name": "Laurent Christophe",
     "email": "lachrist@vub.ac.be"
@@ -9,8 +9,8 @@
   "repository": "lachrist/commonjs-editor",
   "license": "MIT",
   "dependencies": {
-    "brace": "^0.10.0",
-    "browserify": "^14.4.0"
+    "brace": "0.10.0",
+    "browserify": "14.4.0"
   },
   "main": "./main.js",
   "bin": "./bin.js",

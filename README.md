@@ -1,37 +1,52 @@
 # commonjs-editor
 
-Edit and execute top-level fileS of CommonJS modules in browsers.
+Edit and execute top-level files of CommonJS modules in browsers.
 CommonjsEditor is powered by [browserify](http://browserify.org) and [c9.ace.io](https://ace.c9.io).
 Global support:
+* `global`: always available
 * `__filename`: always available.
 * `__dirname`: always available.
 * `process`: never available.
-* `Buffer`: available if `Buffer` or `require("buffer")` is present in the top level file.
+* `Buffer`: available if the top level file contains `Buffer` or `require("buffer")`.
 
-First, parse the top-level file of `my-module.js` for requires and bundle the result into `my-module-playground.js`:
+Usage [here](test/main.js) and compilation [here](test/compile), resulting demo [here](wesh).
+Alternatively, the compilation can also be realised via the CLI:
 
 ```sh
-commonjs-editor my-module.js > my-module-playground.js
+node ../bin.js foo.js > playground.js
+browserify main.js > bundle.js
+rm playground.js
 ```
 
-Alternatively, an API is available:
+## `Playground`
 
-```js
-var Fs = require("fs");
-var Playground = require("commonjs-editor/playground");
-Playground("my-module.js", function (error, playground) {
-  if (error)
-    throw error;
-  Fs.writeFileSync("my-module-playground.js", "module.exports="+JSON.stringify(playground), {encoding:"utf8"});
-});
-```
+### `playground.path :: string`
 
-Second, create an [ace editor](https://ace.c9.io/#nav=api&api=editor) from the previously bundled module:
+* `playground :: commonjs-editor.Playground`
 
-```js
-var CommonjsEditor = require("commonjs-editor");
-var MyModulePlayground = require("./my-module-playground.js");
-var div = document.createElement("div");
-var editor = CommonjsEditor(div, MyModulePlayground);
-var MyModule = global.eval(editor.getBundle());
-```
+### `playground.modules :: [string]`
+
+* `playground :: commonjs-editor.Playground`
+
+### `playground.initial :: string`
+
+* `playground :: commonjs-editor.Playground`
+
+### `playground.require :: string`
+
+* `playground :: commonjs-editor.Playground`
+
+## `require("commonjs-editor/playground")(path, callback)`
+
+* `path :: string`
+* `options :: object`
+* `callback(error, playground)`
+  * `error :: Error`
+  * `playground :: commonjs-editor.Playground`
+
+## `editor = require("commonjs-editor")(container, playground)`
+
+* `container :: dom.Element`
+* `playground :: commonjs-editor.Playground`
+* `editor :: c9.ace.io.Editor`
+  * `bundle = getBundle()`
