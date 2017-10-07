@@ -1,22 +1,17 @@
 # commonjs-editor
 
 Edit and execute top-level files of CommonJS modules in browsers.
+Usage [here](demo/README.md), live demo [here](https://cdn.rawgit.com/lachrist/commonjs-editor/9106eb66/test/index.html).
 CommonjsEditor is powered by [browserify](http://browserify.org) and [c9.ace.io](https://ace.c9.io).
-Global support:
-* `global`: always available
-* `__filename`: always available.
-* `__dirname`: always available.
-* `process`: never available.
-* `Buffer`: available if the top level file contains `Buffer` or `require("buffer")`.
-
-Usage [here](test/main.js) and compilation [here](test/compile.js), resulting demo [here](https://cdn.rawgit.com/lachrist/commonjs-editor/9106eb66/test/index.html).
-Alternatively, the compilation can also be realised via the CLI:
-
-```sh
-node ../bin.js foo.js > playground.js
-browserify main.js > bundle.js
-rm playground.js
-```
+Node-inspired variables accessible inside the editor:
+* `global`: the global object.
+* `require`: for importing CommonJS modules.
+* `module`: for redefining the entire export.
+* `exports`: for exporting a particular field.
+* `__filename`: always verifies `/\/[^/.]+.js/`.
+* `__dirname`: always equals to `"/"`.
+* `process`: if already defined: `process.argv[1] = __filename`.
+* `Buffer`: only available when `Buffer` or `require("buffer")` is present.
 
 ## `Playground`
 
