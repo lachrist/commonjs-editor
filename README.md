@@ -1,7 +1,7 @@
 # commonjs-editor
 
 Edit and execute top-level files of CommonJS modules in browsers.
-Usage [here](demo/), live demo [here](https://cdn.rawgit.com/lachrist/commonjs-editor/2fb01e60/demo/index.html).
+Usage [here](demo/), live demo [here](https://cdn.rawgit.com/lachrist/commonjs-editor/069b24dc/demo/index.html).
 CommonjsEditor is powered by [browserify](http://browserify.org) and [c9.ace.io](https://ace.c9.io).
 Node-inspired variables accessible inside the editor:
 * `global`: the global object.
