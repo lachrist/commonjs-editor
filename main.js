@@ -7,19 +7,19 @@ require("brace/theme/monokai");
 function getBundle () {
   return [
     "(function () {",
-    "  "+this._commonjs_playground.require,
-    "  var global = this;",
-    "  var module = {exports:{}};",
-    "  var exports = module.exports;",
-    "  var Buffer = "+(this._commonjs_playground.modules.indexOf("buffer") === -1 ? "void 0;" : "require(\"buffer\");"),
-    "  var __filename = "+JSON.stringify(this._commonjs_playground.path)+";",
-    "  var __dirname = "+JSON.stringify(Path.dirname(this._commonjs_playground.path))+";",
     "  if (typeof process !== \"undefined\" && Array.isArray(process.argv))",
-    "    process.argv[1] = __filename;",
-    "  (function () {",
+    "    process.argv[1] = "+JSON.stringify(this._commonjs_playground.path)+";",
+    "  var Buffer = "+(this._commonjs_playground.modules.indexOf("buffer") === -1 ? "void 0;" : "require(\"buffer\");"),
+    "  var global = this;",
+    "  "+this._commonjs_playground.require,
+    "  return (function () {",
+    "    var module = {exports:{}};",
+    "    var exports = module.exports;",
+    "    var __filename = "+JSON.stringify(this._commonjs_playground.path)+";",
+    "    var __dirname = "+JSON.stringify(Path.dirname(this._commonjs_playground.path))+";",
     "    "+this.getValue(),
+    "    return module.exports;",
     "  } ());",
-    "  return module.exports;",
     "} ())"
   ].join("\n");
 }
