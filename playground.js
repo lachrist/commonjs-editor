@@ -26,7 +26,7 @@ module.exports = function (path, options, callback) {
       var module = eval(p2);
       if (module[0] === ".")
         module = Path.resolve(Path.dirname(path), module);
-      var expose = module[0] === "/" ? "/"+Path.relative(options.basedir, path) : module;
+      var expose = module[0] === "/" ? "/"+Path.relative(options.basedir, module) : module;
       if (module[0] !== "/" && !Resolve.isCore(module))
         module = Resolve.sync(module, {basedir:Path.dirname(path)});
       add(module, expose);
