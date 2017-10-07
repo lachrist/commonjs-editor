@@ -7,11 +7,11 @@ require("brace/theme/monokai");
 function getBundle () {
   return [
     "(function () {",
+    "  "+this._commonjs_playground.require,
     "  if (typeof process !== \"undefined\" && Array.isArray(process.argv))",
     "    process.argv[1] = "+JSON.stringify(this._commonjs_playground.path)+";",
     "  var Buffer = "+(this._commonjs_playground.modules.indexOf("buffer") === -1 ? "void 0;" : "require(\"buffer\");"),
     "  var global = this;",
-    "  "+this._commonjs_playground.require,
     "  return (function () {",
     "    var module = {exports:{}};",
     "    var exports = module.exports;",

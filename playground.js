@@ -13,12 +13,17 @@ module.exports = function (path, options, callback) {
   Fs.readFile(path, "utf8", function (error, content) {
     if (error)
       return callback(error);
-    function buffercheck (content) {
+    function checkbuffer (content) {
       if (result.modules.indexOf("buffer") === -1 && content.search(/([^a-zA-Z0-9_$]|^)Buffer([^a-zA-Z0-9_$]|$)/) !== -1) {
         browserify.require("buffer", "buffer");
         result.modules.push("buffer");
       }
     }
+    var modules = [];
+    var result = {
+      path: "/"+Path.relative(basedir, path),
+      modules: []
+    };
     var browserify = Browserify(options);
     browserify.transform(function (file) {
       var content = "";
@@ -30,7 +35,7 @@ module.exports = function (path, options, callback) {
           callback();
         },
         flush: function (callback) {
-          buffercheck(content);
+          checkbuffer(content);
           var filename = "/"+Path.relative(basedir, file);
           stream.push("\n} ("+JSON.stringify(filename)+","+JSON.stringify(Path.dirname(filename))+"));");
           callback();
@@ -39,11 +44,7 @@ module.exports = function (path, options, callback) {
       stream.push("(function (__filename, __dirname) {\n");
       return stream;
     }, {global:true});
-    var modules = [];
-    var result = {
-      path: "/"+Path.relative(basedir, path),
-      modules: []
-    };
+    checkbuffer(content);
     result.initial = content.replace(/([^a-zA-Z0-9_$]|^)require\s*\(\s*(("[^"]*")|('[^']*'))\s*\)/g, function (match, p1, p2) {
       var module = eval(p2);
       if (module[0] === ".")
