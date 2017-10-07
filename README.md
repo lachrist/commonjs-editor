@@ -1,16 +1,16 @@
 # commonjs-editor
 
 Edit and execute top-level files of CommonJS modules in browsers.
-Usage [here](demo/README.md), live demo [here](https://cdn.rawgit.com/lachrist/commonjs-editor/9106eb66/test/index.html).
+Usage [here](demo/), live demo [here](https://cdn.rawgit.com/lachrist/commonjs-editor/9106eb66/test/index.html).
 CommonjsEditor is powered by [browserify](http://browserify.org) and [c9.ace.io](https://ace.c9.io).
 Node-inspired variables accessible inside the editor:
 * `global`: the global object.
 * `require`: for importing CommonJS modules.
 * `module`: for redefining the entire export.
 * `exports`: for exporting a particular field.
-* `__filename`: always verifies `/\/[^/.]+.js/`.
-* `__dirname`: always equals to `"/"`.
-* `process`: if already defined: `process.argv[1] = __filename`.
+* `__filename`: relative to `options.basedir`.
+* `__dirname`: relative to `options.basedir`.
+* `process`: if defined: `process.argv[1] = __filename`.
 * `Buffer`: only available when `Buffer` or `require("buffer")` is present.
 
 ## `Playground`
@@ -31,10 +31,10 @@ Node-inspired variables accessible inside the editor:
 
 * `playground :: commonjs-editor.Playground`
 
-## `require("commonjs-editor/playground")(path, callback)`
+## `require("commonjs-editor/playground")(path, options, callback)`
 
 * `path :: string`
-* `options :: object`
+* `options :: browserify.Options`
 * `callback(error, playground)`
   * `error :: Error`
   * `playground :: commonjs-editor.Playground`

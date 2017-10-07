@@ -2,7 +2,7 @@ var Fs = require("fs");
 var Path = require("path");
 var Playground = require("../playground.js");
 var Browserify = require("browserify");
-Playground(Path.join(__dirname, "foo.js"), function (error, playground) {
+Playground(Path.join(__dirname, "foo.js"), {basedir:Path.resolve(Path.join(__dirname, ".."))}, function (error, playground) {
   if (error)
     throw error;
   var content = "module.exports = "+JSON.stringify(playground)+";";

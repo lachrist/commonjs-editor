@@ -2,32 +2,43 @@
 var Fs = require("fs");
 var Path = require("path");
 var Browserify = require("browserify");
+var Resolve = require("resolve");
 
-function absolute (module) { return module[0] === "." ? module.substring(1) : module }
-
-module.exports = function (path, callback) {
+module.exports = function (path, options, callback) {
+  var options = options || {};
+  options.basedir = options.basedir || Path.dirname(path);
   Fs.readFile(path, "utf8", function (error, content) {
     if (error)
       return callback(error);
+    var browserify = Browserify(options);
     var modules = [];
-    content = content.replace(/([^a-zA-Z0-9_$]|^)require\s*\(\s*(("[^"]*")|('[^']*'))\s*\)/g, function (match, p1, p2) {
+    var result = {
+      path: "/"+Path.relative(options.basedir, path),
+      modules: []
+    };
+    function add (module, expose) {
+      if (result.modules.indexOf(module) === -1) {
+        browserify.require(module, {expose:expose});
+        result.modules.push(expose);
+      }
+    }
+    result.initial = content.replace(/([^a-zA-Z0-9_$]|^)require\s*\(\s*(("[^"]*")|('[^']*'))\s*\)/g, function (match, p1, p2) {
       var module = eval(p2);
-      modules.push(module);
-      return p1+"require("+JSON.stringify(absolute(module))+")";
+      if (module[0] === ".")
+        module = Path.resolve(Path.dirname(path), module);
+      var expose = module[0] === "/" ? "/"+Path.relative(options.basedir, path) : module;
+      if (module[0] !== "/" && !Resolve.isCore(module))
+        module = Resolve.sync(module, {basedir:Path.dirname(path)});
+      add(module, expose);
+      return p1+"require("+JSON.stringify(expose)+")";
     });
     if (content.search(/([^a-zA-Z0-9_$]|^)Buffer([^a-zA-Z0-9_$]|$)/) !== -1)
-      modules.push("buffer");
-    var browserify = Browserify({basedir:Path.dirname(path)});
-    modules.forEach(function (module) { browserify.require(module, {expose:module}) });
+      add("buffer", "buffer");
     browserify.bundle(function (error, bundle) {
       if (error)
         return callback(error);
-      callback(null, {
-        filename: Path.basename(path),
-        initial: content,
-        modules: modules.map(absolute),
-        require: bundle.toString("utf8")
-      });
+      result.require = bundle.toString("utf8");
+      callback(null, result);
     });
   });
 };
